@@ -1,0 +1,56 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type=text/javascript>
+        var NUM_PICTURES = 4;
+        var COUNTDOWN_TIME = 5;
+        $(function() {
+        /* To call a function with a button
+          $('a#test').bind('click', function() {
+            $.get('/background_process_test',
+                function(rawImageData) {
+              $("#target").attr("src","data:image/gif;base64," + rawImageData);
+            });
+            return false;
+          });
+        */
+
+        });
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function capture_sequence() {
+            // for each of the pictures to be taken
+            for (let i = 0; i < NUM_PICTURES; i++) {
+                // label which picture this is
+                $("#picture_count").html("Picture " + (i + 1) + " / " + NUM_PICTURES);
+
+                // countdown from COUNTDOWN_TIME
+                for (let j = COUNTDOWN_TIME; j > 0; j--) {
+                    $("#timer_count").html(j);
+                    await sleep(1000);
+                }
+
+                // take the picture
+                // $.get('/trigger_and_return_picture',
+                //     function(rawImageData) {
+                //   $("#target").attr("src","data:image/gif;base64," + rawImageData);
+                // });
+            }
+        }
+
+
+</script>
+
+<div class='container'>
+    <h3>Test</h3>
+        <form>
+            <a href=# id=test><button class='btn btn-default'>Test</button></a>
+        </form>
+
+    <body onload="javascript:capture_sequence()">
+        <h1 id="picture_count"></h1>
+        <h2 id="timer_count"></h2>
+        <img id="target" src="" />
+    </body>
+</div>
