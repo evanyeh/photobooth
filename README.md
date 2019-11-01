@@ -50,3 +50,28 @@ gphoto2 --list-files
 gphoto2 --get-all-files
 gphoto2 --folder="/folder/of/pics" -R --delete-all-files
 ```
+
+```
+python3 -m venv venv
+source venv/vin/activate
+pip3 install flask
+pip3 install python-dotenv
+pip3 install -v gphoto2
+```
+
+If get "No such file or directory: 'pkg-config': 'pkg-config'" during pip3 install -v gphoto2, then run
+```
+sudo apt install pkg-config
+pip3 install --upgrade setuptools
+pip3 install ez_setup
+
+
+```
+sudo apt install linuxbrew-wrapper
+brew install pkg-config
+```
+
+
+Run with `flask run` or `python photobooth.py`
+
+
