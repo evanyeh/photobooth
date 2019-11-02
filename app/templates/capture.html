@@ -1,3 +1,12 @@
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type=text/javascript>
         var NUM_PICTURES = 4;
@@ -23,34 +32,83 @@
             // for each of the pictures to be taken
             for (let i = 0; i < NUM_PICTURES; i++) {
                 // label which picture this is
-                $("#picture_count").html("Picture " + (i + 1) + " / " + NUM_PICTURES);
+                $("#picture_count").html("Taking Picture " + (i + 1) + " of " + NUM_PICTURES);
 
                 // countdown from COUNTDOWN_TIME
-                for (let j = COUNTDOWN_TIME; j > 0; j--) {
+                for (let j = COUNTDOWN_TIME; j >= 0; j--) {
                     $("#timer_count").html(j);
                     await sleep(1000);
+                    if (j == 2) {
+                        // take the picture
+                        $.get('/trigger_and_return_picture',
+                            function(rawImageData) {
+                          $("#target").attr("src","data:image/gif;base64," + rawImageData);
+                        });
+                    }
                 }
 
-                // take the picture
-                // $.get('/trigger_and_return_picture',
-                //     function(rawImageData) {
-                //   $("#target").attr("src","data:image/gif;base64," + rawImageData);
-                // });
+                $("#timer_count").html("LOADING...");
+
+                // wait for download and display
+                await sleep(6000);
+                $("#timer_count").html("DONE");
             }
         }
-
-
 </script>
 
-<div class='container'>
-    <h3>Test</h3>
+
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
+    <style type="text/css">
+        /* * {
+            margin: 0;
+            padding: 0;
+        } */
+        .imgbox {
+            display: grid;
+            height: 100%;
+        }
+        .center-fit {
+            max-width: 90%;
+            max-height: 90vh;
+            margin: auto;
+        }
+        .container.custom-container {
+            padding: 0 50px;
+        }
+        .imgwrapper {
+             /* max-height: 60%;
+             max-width: 100%; */
+             width: 70%;
+             display: block;
+              margin-left: auto;
+              margin-right: auto;
+        }​
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Gloria Hallelujah' !important;
+        }
+        p, div {
+            font-family: 'Gloria Hallelujah' !important;
+        }
+    </style>
+</head>
+
+<div class='text-center'>
+    <!-- <h3>Test</h3>
         <form>
             <a href=# id=test><button class='btn btn-default'>Test</button></a>
-        </form>
+        </form> -->
 
     <body onload="javascript:capture_sequence()">
         <h1 id="picture_count"></h1>
-        <h2 id="timer_count"></h2>
-        <img id="target" src="" />
+        <h1 id="timer_count"></h1>
+        <!-- <div class="container">
+            <div class="col-md-12" style="padding-left: 0px;  padding-right: 0px;">
+                <img id="target" src="" class="img-responsive">
+            </div>
+        </div> -->
+        <div class="imgwrapper">
+            <img id="target" class="img-responsive" src="">
+        </div>
     </body>
 </div>
