@@ -17,14 +17,6 @@
             p, div {
                 font-family: 'Gloria Hallelujah' !important;
             }
-            .vertical-center {
-                min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-                min-height: 100vh; /* These two lines are counted as one :-)       */
-
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
             body {
                 background-color: #d98e71;
             }
@@ -33,10 +25,8 @@
     <body>
         <div class="text-center" style="margin: 100px;"><h1 style="font-size: 96px;font-weight: bold; color:white;">Bechtel 214 Fall Is Life Gathering</h1><div>
         <div class="text-center" style="margin: 100px;"><h2 style="font-size: 86px;font-weight: bold; color:white;">Photobooth</h2><div>
-        <div id="container" class='vertical-center'>
-
+        <div id="container" class='text-center' style="margin: 300px">
             <div><button type="button" class="btn btn-warning" style="font-size:96px; font-weight: bold;" onclick="window.location.href = '/capture';">Start</button></div>
-
         </div>
     </body>
 </html>
