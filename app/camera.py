@@ -3,11 +3,6 @@ from datetime import datetime
 from sh import gphoto2 as gp
 import signal, os, subprocess
 
-clearCommand = ["--folder", "/store_00010001/DCIM/100D5300", "-R", "--delete-all-files"]
-triggerCommand = ["--trigger-capture"]
-downloadCommand = ["--get-all-files"]
-captureAndDownloadCommand = ["--capture-image-and-download", "--filename", "name.JPG"]
-save_location = ""
 # Kill the gphoto2 process that starts whenever we connect the camera.
 def kill_gphoto2_process():
     p = subprocess.Popen(['ps', '-A'], stdout=subprocess.PIPE)
@@ -32,27 +27,5 @@ def create_save_folder(album_location):
 
 def capture_image(album_location):
     img_path = album_location + datetime.now().strftime("%Y.%m.%d %H:%M:%S") + ".JPG"
-    captureAndDownloadCommand[2] = img_path
-    gp(captureAndDownloadCommand)
+    gp(["--capture-image-and-download", "--filename", img_path])
     return img_path
-
-# def captureImages():
-#     gp(triggerCommand)
-#     sleep(3)
-#     gp(downloadCommand)
-#     gp(clearCommand)
-#
-# def renameFiles(ID):
-#     shot_time = datetime.now().strftime("%Y.%m.%d %H:%M:%S")
-#     for filename in os.listdir("."):
-#         if len(filename) < 13:
-#             if filename.endswith(".JPG"):
-#                 os.rename(filename, (ID + "_" + shot_time + ".JPG"))
-#                 print("Renamed the JPG")
-
-
-# killgphoto2process()
-# gp(clearCommand)
-# createSaveFolder()
-# captureImages()
-# renameFiles(picID)
