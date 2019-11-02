@@ -1,0 +1,33 @@
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
+        <style type="text/css">
+            h1, h2, h3, h4, h5, h6 {
+                font-family: 'Gloria Hallelujah' !important;
+            }
+            p, div {
+                font-family: 'Gloria Hallelujah' !important;
+            }
+            body {
+                background-color: #d98e71;
+            }
+        </style>
+    </head>
+    <div class='text-center'>
+        <h1 style="font-size:96px; margin: 200px; color:white;">Enter email to receive pix:</h1>
+        <form style="font-size:96px;" action="{{ url_for('send_email') }}" method="post">
+            <input type="text" name="email">
+            <input type="submit" class="btn btn-warning" style="font-size:86px">
+        </form>
+        <h4 style="font-size:48px; color:white">wait like 2.5 seconds after clicking submit</h4>
+    </div>
+</html>
