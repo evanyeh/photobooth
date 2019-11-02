@@ -9,8 +9,8 @@
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type=text/javascript>
-        var NUM_PICTURES = 4;
-        var COUNTDOWN_TIME = 5;
+        var NUM_PICTURES = 1;
+        var COUNTDOWN_TIME = 1;
         $(function() {
         /* To call a function with a button
           $('a#test').bind('click', function() {
@@ -53,6 +53,8 @@
                 await sleep(6000);
                 $("#timer_count").html("DONE");
             }
+            await sleep(2000);
+            window.location.href = '/distribute';
         }
 </script>
 
@@ -90,6 +92,9 @@
         p, div {
             font-family: 'Gloria Hallelujah' !important;
         }
+        body {
+            background-color: #f5e4ae;
+        }
     </style>
 </head>
 
@@ -100,8 +105,8 @@
         </form> -->
 
     <body onload="javascript:capture_sequence()">
-        <h1 id="picture_count"></h1>
-        <h1 id="timer_count"></h1>
+        <h1 id="picture_count" style="font-size:48px;"></h1>
+        <h1 id="timer_count" style="font-size:48px;"></h1>
         <!-- <div class="container">
             <div class="col-md-12" style="padding-left: 0px;  padding-right: 0px;">
                 <img id="target" src="" class="img-responsive">
