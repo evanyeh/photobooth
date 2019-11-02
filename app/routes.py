@@ -84,9 +84,9 @@ def send_mail(recipient):
     text = MIMEText('Hope you have a wonderfull fall! \n\nSeasons greetings,\nSuite 214\n' + ', '.join([str(elem) for elem in suite_members]))
     msg.attach(text)
     log = open(config_file.album_location + 'user_log.txt','a+')
-    log.write(recipient+'/n')
+    log.write(recipient+'\n')
     for i in user_images:
-        log.write(i+'/n')
+        log.write(i+'\n')
         img_data = open(i, 'rb').read()
         image = MIMEImage(img_data, name=os.path.basename(i))
         msg.attach(image)
