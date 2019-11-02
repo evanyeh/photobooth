@@ -38,7 +38,6 @@ def capture_sequence():
 def trigger_and_return_picture():
     failed = False
     # trigger capture
-    print('here in trigger and return')
     img_path = camera.capture_image(config_file.album_location)
 
     # wait for image to come in
@@ -68,7 +67,6 @@ def distribute():
 
 @app.route('/send_email', methods=['POST'])
 def send_email():
-    print(user_images)
     email = request.form['email']
     # send email here
     send_mail(email)
