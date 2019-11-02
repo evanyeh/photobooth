@@ -38,22 +38,27 @@ def capture_sequence():
 def trigger_and_return_picture():
     failed = False
     # trigger capture
-    img_path = camera.capture_image(config_file.album_location)
+    try:
+        img_path = camera.capture_image(config_file.album_location)
+    except:
+        failed = True
+        print('---------CAMERA CAPTURE FAILED')
 
-    # wait for image to come in
-    start_time = datetime.datetime.now()
-    while not os.path.exists(img_path):
-        # wait here
-        if (datetime.datetime.now() - start_time).total_seconds() > 6:
-            print("Timeout")
-            failed = True
-            break
+    if not failed:
+        # wait for image to come in
+        start_time = datetime.datetime.now()
+        while not os.path.exists(img_path):
+            # wait here
+            if (datetime.datetime.now() - start_time).total_seconds() > 6:
+                print("--------- TIMEOUT")
+                failed = True
+                break
 
     # return image
     if not failed:
         user_images.append(img_path)
     else:
-        img_path = 'app/esther.jpg'
+        img_path = 'app/static/fail/esther.jpg'
 
     with open(img_path, 'rb') as img_file:
             img_string = base64.b64encode(img_file.read())
@@ -75,8 +80,10 @@ def send_email():
 def send_mail(recipient):
     msg = MIMEMultipart()
     msg['Subject'] = 'Bechtel 214 Fall is Life Gathering Photos'
-    msg['From'] = config_file.email_username
+    msg['From'] = "Suite 214 (:"
     msg['To'] = recipient
+
+    # add things to user images here:
 
     suite_members = ['Daniel', 'Evan', 'Alex', 'Esther', 'Yoojin', 'Brandon']
     random.shuffle(suite_members)
