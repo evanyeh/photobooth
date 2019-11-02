@@ -57,6 +57,7 @@ source venv/vin/activate
 pip3 install flask
 pip3 install python-dotenv
 pip3 install -v gphoto2
+pip3 install flask-bootstrap
 ```
 
 If get "No such file or directory: 'pkg-config': 'pkg-config'" during pip3 install -v gphoto2, then run
