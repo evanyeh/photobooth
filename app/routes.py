@@ -7,6 +7,7 @@ import time
 import random
 from app import camera
 import config_file
+import threading # for avoiding email sending wait
 # for email sending
 import smtplib
 from email.mime.text import MIMEText
@@ -74,10 +75,11 @@ def distribute():
 def send_email():
     email = request.form['email']
     # send email here
-    send_mail(email)
+    mail = threading.Thread(target=send_mail, args=(email,user_images.copy()))
+    mail.start()
     return redirect('/idle')
 
-def send_mail(recipient):
+def send_mail(recipient, user_images_copy):
     msg = MIMEMultipart()
     msg['Subject'] = 'Bechtel 214 Fall is Life Gathering Photos'
     msg['From'] = "Suite 214 (:"
@@ -92,7 +94,7 @@ def send_mail(recipient):
     msg.attach(text)
     log = open(config_file.album_location + 'user_log.txt','a+')
     log.write(recipient+'\n')
-    for i in user_images:
+    for i in user_images_copy:
         log.write(i+'\n')
         img_data = open(i, 'rb').read()
         image = MIMEImage(img_data, name=os.path.basename(i))
