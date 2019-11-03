@@ -18,6 +18,7 @@ def kill_gphoto2_process():
 def init(album_location):
     kill_gphoto2_process()
     create_save_folder(album_location)
+    gp(["--set-config", "capturetarget=1"])
 
 def create_save_folder(album_location):
     try:
@@ -27,5 +28,5 @@ def create_save_folder(album_location):
 
 def capture_image(album_location):
     img_path = album_location + datetime.now().strftime("%Y.%m.%d %H:%M:%S") + ".JPG"
-    gp(["--capture-image-and-download", "--filename", img_path])
+    gp(["--capture-image-and-download", "--filename", img_path, "--keep"])
     return img_path
