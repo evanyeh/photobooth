@@ -33,7 +33,11 @@ def idle():
 @app.route('/capture')
 def capture_sequence():
     del user_images[:]
-    camera.init(config_file.album_location)
+    try:
+        camera.init(config_file.album_location)
+    except:
+        print('---------CAMERA INIT FAILED')
+        return redirect('/idle')
     return render_template('capture.html')
 
 @app.route('/trigger_and_return_picture')
