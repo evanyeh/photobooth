@@ -23,10 +23,10 @@
         </style>
     </head>
     <div class='text-center'>
-        <h1 style="font-size:96px; margin: 200px; color:white;">Enter email to receive pix:</h1>
+        <h1 style="font-size:150px; margin: 200px; color:white; font-weight: bold;">Enter email to receive pix:</h1>
         <form style="font-size:96px;" action="{{ url_for('send_email') }}" method="post">
-            <input type="text" name="email">
-            <input type="submit" class="btn btn-warning" style="font-size:86px">
+            <input type="text" name="email" autofocus="autofocus">
+            <input type="submit" class="btn btn-warning" style="font-size:86px; font-weight: bold;">
         </form>
         <div id="container" class='text-center' style="">
             <div><button type="button" class="btn btn-warning" style="font-size:96px; font-weight: bold;" onclick="window.location.href = '/idle';">Skip</button></div>
