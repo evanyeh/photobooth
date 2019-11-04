@@ -69,7 +69,7 @@ def trigger_and_return_picture():
 
 @app.route('/distribute')
 def distribute():
-    print("---------PICTURES TAKEN:" + user_images)
+    print("---------PICTURES TAKEN:" + str(user_images))
     return render_template('distribute.html')
 
 @app.route('/send_email', methods=['POST'])
