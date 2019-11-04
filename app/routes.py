@@ -27,11 +27,12 @@ def preview():
 
 @app.route('/idle')
 def idle():
+    del user_images[:]
     return render_template('idle.html')
 
 @app.route('/capture')
 def capture_sequence():
-    user_images = []
+    del user_images[:]
     camera.init(config_file.album_location)
     return render_template('capture.html')
 
@@ -55,11 +56,11 @@ def trigger_and_return_picture():
                 failed = True
                 break
 
-    # return image
-    if not failed:
-        user_images.append(img_path)
-    else:
-        img_path = 'app/static/fail/esther.jpg'
+    # failed image
+    if failed:
+        img_path = 'app/static/fail/esther.JPG'
+
+    user_images.append(img_path)
 
     with open(img_path, 'rb') as img_file:
             img_string = base64.b64encode(img_file.read())
@@ -68,7 +69,7 @@ def trigger_and_return_picture():
 
 @app.route('/distribute')
 def distribute():
-    print(user_images)
+    print("---------PICTURES TAKEN:" + user_images)
     return render_template('distribute.html')
 
 @app.route('/send_email', methods=['POST'])
@@ -77,6 +78,7 @@ def send_email():
     # send email here
     mail = threading.Thread(target=send_mail, args=(email,user_images.copy()))
     mail.start()
+    del user_images[:]
     return redirect('/idle')
 
 def send_mail(recipient, user_images_copy):
@@ -97,7 +99,7 @@ def send_mail(recipient, user_images_copy):
     for i in user_images_copy:
         log.write(i+'\n')
         img_data = open(i, 'rb').read()
-        image = MIMEImage(img_data, name=os.path.basename(i))
+        image = MIMEImage(img_data, name=os.path.basename(i), _subtype="jpg")
         msg.attach(image)
     log.close()
 
