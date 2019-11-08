@@ -1,20 +1,25 @@
 # Photobooth
 
-This repo allows the control of a Nikon D5300 over USB using a Raspberry Pi (Zero W).
+This repo allows the control of a Nikon D5300 (and any camera supported by gphoto) over USB.
 
 
 ### Initial Setup
 
-* setup on Raspberry PI:
+* setup on host:
 	1. `sudo apt-get update`
 	2. `sudo apt-get install gphoto2`
-	3. `sudo pip3 install sh`
-	4. To check installation: run `gphoto --auto-detect`
+	3. To check installation: run `gphoto --auto-detect`
 		* which should list the connected camera e.g. `Nikon DSC D5300`
 		* if the camera is not listed, try restarting the camera
-
+    4. Run the following
+    ```
+    python3 -m venv venv
+    source venv/vin/activate
+    pip3 install flask
+    pip3 install sh
+    ```
 * setup on Nikon D5300:
-	1. None.
+	1. Turn on.
 
 
 ### Configuring Picture Save Location
@@ -50,29 +55,3 @@ gphoto2 --list-files
 gphoto2 --get-all-files
 gphoto2 --folder="/folder/of/pics" -R --delete-all-files
 ```
-
-```
-python3 -m venv venv
-source venv/vin/activate
-pip3 install flask
-pip3 install python-dotenv
-pip3 install -v gphoto2
-pip3 install flask-bootstrap
-```
-
-If get "No such file or directory: 'pkg-config': 'pkg-config'" during pip3 install -v gphoto2, then run
-```
-sudo apt install pkg-config
-pip3 install --upgrade setuptools
-pip3 install ez_setup
-
-
-```
-sudo apt install linuxbrew-wrapper
-brew install pkg-config
-```
-
-
-Run with `flask run` or `python photobooth.py`
-
-
