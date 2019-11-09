@@ -87,16 +87,17 @@ def send_email():
 
 def send_mail(recipient, user_images_copy):
     msg = MIMEMultipart()
-    msg['Subject'] = 'Bechtel 214 Fall is Life Gathering Photos'
+    msg['Subject'] = 'Suite 214 Fall is Life Gathering Photos'
     msg['From'] = "Suite 214 (:"
     msg['To'] = recipient
 
-    # add things to user images here:
-
+    # build email message
     suite_members = ['Daniel', 'Evan', 'Alex', 'Esther', 'Yoojin', 'Brandon']
     random.shuffle(suite_members)
+    body = '<p>Thanks for hanging out with us! We hope you had a good time (:&nbsp;</p><p>  <br></p><p>  <a href="https://youtu.be/eupRD3QD6yM?t=92">Season\'s greetings</a>,</p><p>'
+    body += ', '.join([str(elem) for elem in suite_members]) + '</p>'
 
-    text = MIMEText('Hope you have a wonderfull fall! \n\nSeasons greetings,\nSuite 214\n' + ', '.join([str(elem) for elem in suite_members]))
+    text = MIMEText(body, 'html')
     msg.attach(text)
     log = open(config_file.album_location + 'user_log.txt','a+')
     log.write(recipient+'\n')
