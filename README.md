@@ -1,6 +1,6 @@
 # Photobooth
 
-This repo allows the control of a Nikon D5300 (and any camera supported by gphoto) over USB.
+A web photobooth app that takes multiple pictures over USB using any camera compatible with gphoto2. Pictures are transferred to the host immediately and displayed on screen. Users can also email session pictures to themselves.
 
 
 ### Initial Setup
@@ -11,13 +11,16 @@ This repo allows the control of a Nikon D5300 (and any camera supported by gphot
 	3. To check installation: run `gphoto --auto-detect`
 		* which should list the connected camera e.g. `Nikon DSC D5300`
 		* if the camera is not listed, try restarting the camera
-    4. Run the following
+    4. Setup python virtual environment
     ```
     python3 -m venv venv
     source venv/vin/activate
     pip3 install flask
     pip3 install sh
     ```
+    5. Run `python3 photobooth.py`
+    6. View app on http://127.0.0.1:5000/
+    
 * setup on Nikon D5300:
 	1. Turn on.
 
@@ -50,7 +53,7 @@ Then run `gphoto2 --get-config capturetarget` to verify changed save location.
 gphoto2 --auto-detect
 gphoto2 --trigger-capture
 gphoto2 --get-config capturetarget
-gphoto2 --set-config capturetarget
+gphoto2 --set-config capturetarget=
 gphoto2 --list-files
 gphoto2 --get-all-files
 gphoto2 --folder="/folder/of/pics" -R --delete-all-files
