@@ -11,23 +11,13 @@
 <script type=text/javascript>
         var NUM_PICTURES = 4;
         var COUNTDOWN_TIME = 5;
-        $(function() {
-        /* To call a function with a button
-          $('a#test').bind('click', function() {
-            $.get('/background_process_test',
-                function(rawImageData) {
-              $("#target").attr("src","data:image/gif;base64," + rawImageData);
-            });
-            return false;
-          });
-        */
 
-        });
-
+        // function to sleep in milliseconds
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
 
+        // manages sequence of taking pictures
         async function capture_sequence() {
             // for each of the pictures to be taken
             for (let i = 0; i < NUM_PICTURES; i++) {
@@ -36,10 +26,15 @@
 
                 // countdown from COUNTDOWN_TIME
                 for (let j = COUNTDOWN_TIME; j >= 0; j--) {
+                    // display countdown
                     $("#timer_count").html(j);
+                    // wait a second
                     await sleep(1000);
+                    // T-2 seconds to start trigger is just the right amount of
+                    // time to take picture exactly on zero
                     if (j == 2) {
-                        // take the picture
+                        // call the python function to take picture and display
+                        // image review
                         $.get('/trigger_and_return_picture',
                             function(rawImageData) {
                           $("#target").attr("src","data:image/gif;base64," + rawImageData);
