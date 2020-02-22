@@ -37,11 +37,11 @@ picture taking page with countdown text block and image review screen
 @app.route('/capture')
 def capture_sequence():
     del user_images[:]
-    # try:
-    #     camera.init(config_file.album_location)
-    # except:
-    #     print('---------CAMERA INIT FAILED')
-    #     return redirect('/idle')
+    try:
+        camera.init(config_file.album_location)
+    except:
+        print('---------CAMERA INIT FAILED')
+        return redirect('/idle')
     return render_template('capture.html', \
         styling=config_file.styling, \
         num_pictures=config_file.num_pictures, \
