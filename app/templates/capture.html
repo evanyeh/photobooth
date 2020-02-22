@@ -9,8 +9,8 @@
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type=text/javascript>
-        var NUM_PICTURES = 4;
-        var COUNTDOWN_TIME = 5;
+        var NUM_PICTURES = {{ num_pictures }};
+        var COUNTDOWN_TIME = {{ countdown_time }};
 
         // function to sleep in milliseconds
         function sleep(ms) {
@@ -55,7 +55,7 @@
 
 
 <head>
-    <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
+    <link href="{{ styling['font_file'] }}" rel="stylesheet">
     <style type="text/css">
         /* * {
             margin: 0;
@@ -82,13 +82,13 @@
               margin-right: auto;
         }​
         h1, h2, h3, h4, h5, h6 {
-            font-family: 'Gloria Hallelujah' !important;
+            font-family: '{{ styling['font_name'] }}' !important;
         }
         p, div {
-            font-family: 'Gloria Hallelujah' !important;
+            font-family: '{{ styling['font_name'] }}' !important;
         }
         body {
-            background-color: #f5e4ae;
+            background-color: #{{ styling['secondary_bg_color'] }};
         }
     </style>
 </head>

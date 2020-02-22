@@ -9,21 +9,21 @@
 
 <html>
     <head>
-        <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
+        <link href="{{ styling['font_file'] }}" rel="stylesheet">
         <style type="text/css">
             h1, h2, h3, h4, h5, h6 {
-                font-family: 'Gloria Hallelujah' !important;
+                font-family: '{{ styling['font_name'] }}' !important;
             }
             p, div {
-                font-family: 'Gloria Hallelujah' !important;
+                font-family: '{{ styling['font_name'] }}' !important;
             }
             body {
-                background-color: #d98e71;
+                background-color: #{{ styling['primary_bg_color'] }};
             }
         </style>
     </head>
     <div class='text-center'>
-        <h1 style="font-size:150px; margin: 200px; color:white; font-weight: bold;">Enter email to receive pix:</h1>
+        <h1 style="font-size:150px; margin: 200px; color:#{{ primary_font_color }}; font-weight: bold;">Enter email to receive pix:</h1>
         <form style="font-size:96px;" action="{{ url_for('send_email') }}" method="post">
             <input type="text" name="email" autofocus="autofocus">
             <input type="submit" class="btn btn-warning" style="font-size:86px; font-weight: bold;">

@@ -28,7 +28,7 @@ def index():
 @app.route('/idle')
 def idle():
     del user_images[:]
-    return render_template('idle.html')
+    return render_template('idle.html', styling=config_file.styling)
 
 '''
 Clears sessions image filepaths, initiates gphoto2 camera settings, renders
@@ -37,12 +37,15 @@ picture taking page with countdown text block and image review screen
 @app.route('/capture')
 def capture_sequence():
     del user_images[:]
-    try:
-        camera.init(config_file.album_location)
-    except:
-        print('---------CAMERA INIT FAILED')
-        return redirect('/idle')
-    return render_template('capture.html')
+    # try:
+    #     camera.init(config_file.album_location)
+    # except:
+    #     print('---------CAMERA INIT FAILED')
+    #     return redirect('/idle')
+    return render_template('capture.html', \
+        styling=config_file.styling, \
+        num_pictures=config_file.num_pictures, \
+        countdown_time=config_file.countdown_time)
 
 '''
 Called by javascript in /capture to attempt to capture and download
@@ -86,7 +89,7 @@ Distribution page that prompts for email or allows user to skip
 @app.route('/distribute')
 def distribute():
     print("---------PICTURES TAKEN:" + str(user_images))
-    return render_template('distribute.html')
+    return render_template('distribute.html', styling=config_file.styling)
 
 '''
 Called after submitting email form and starts an email-sending thread before
@@ -108,14 +111,14 @@ Sends an email to a recipient with images in user_images_copy attached
 '''
 def send_mail(recipient, user_images_copy):
     msg = MIMEMultipart()
-    msg['Subject'] = 'Suite 214 Fall is Life Gathering Photos'
-    msg['From'] = "Suite 214 (:"
+    msg['Subject'] = config_file.email_subject
+    msg['From'] = config_file.email_from
     msg['To'] = recipient
 
     # build email message
     suite_members = ['Daniel', 'Evan', 'Alex', 'Esther', 'Yoojin', 'Brandon']
     random.shuffle(suite_members)
-    body = '<p>Thanks for hanging out with us! We hope you had a good time (:&nbsp;</p><p>  <br></p><p>  <a href="https://youtu.be/eupRD3QD6yM?t=92">Season\'s greetings</a>,</p><p>'
+    body = config_file.email_body
     body += ', '.join([str(elem) for elem in suite_members]) + '</p>'
 
     text = MIMEText(body, 'html')

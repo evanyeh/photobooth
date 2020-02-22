@@ -9,25 +9,25 @@
 
 <html>
     <head>
-        <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
+        <link href="{{ styling['font_file'] }}" rel="stylesheet">
         <style type="text/css">
             h1, h2, h3, h4, h5, h6 {
-                font-family: 'Gloria Hallelujah' !important;
+                font-family: '{{ styling['font_name'] }}' !important;
             }
             p, div {
-                font-family: 'Gloria Hallelujah' !important;
+                font-family: '{{ styling['font_name'] }}' !important;
             }
             body {
-                background-color: #d98e71;
+                background-color: #{{ styling['primary_bg_color'] }};
             }
         </style>
     </head>
     <body onkeypress="window.location.href = '/capture'";>
-        <div class="text-center" style="margin: 100px;"><h1 style="font-size: 150px;font-weight: bold; color:white;">Bechtel 214 Fall Is Life Gathering</h1><div>
-        <div class="text-center" style="margin: 100px;"><h2 style="font-size: 110px;font-weight: bold; color:#836953;">Photobooth</h2><div>
+        <div class="text-center" style="margin: 100px;"><h1 style="font-size: 150px;font-weight: bold; color:#{{ styling['primary_font_color'] }};">Bechtel 214 Fall Is Life Gathering</h1><div>
+        <div class="text-center" style="margin: 100px;"><h2 style="font-size: 110px;font-weight: bold; color:#{{ styling['secondary_font_color'] }};">Photobooth</h2><div>
         <div id="container" class='text-center' style="margin: 100px">
             <div><button type="button" class="btn btn-warning" style="font-size:96px; font-weight: bold;" onclick="window.location.href = '/capture';">Start</button></div>
         </div>
-        <div class="text-center" style="margin: 100px;"><h2 style="font-size: 70px;font-weight: bold; color:white;">or press space key</h2><div>
+        <div class="text-center" style="margin: 100px;"><h2 style="font-size: 70px;font-weight: bold; color:#{{ styling['primary_font_color'] }};">or press space key</h2><div>
     </body>
 </html>
