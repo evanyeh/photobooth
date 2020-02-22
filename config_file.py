@@ -1,4 +1,6 @@
 # Image processing
+email_username = "username@gmail.com"
+email_password = "password"
 
 # Image capture
 session_name = "winterpicnictest"
