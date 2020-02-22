@@ -26,10 +26,10 @@
         <h1 style="font-size:150px; margin: 200px; color:#{{ primary_font_color }}; font-weight: bold;">Enter email to receive pix:</h1>
         <form style="font-size:96px;" action="{{ url_for('send_email') }}" method="post">
             <input type="text" name="email" autofocus="autofocus">
-            <input type="submit" class="btn btn-warning" style="font-size:86px; font-weight: bold;">
+            <input type="submit" class="btn btn-default" style="font-size:86px; font-weight: bold;">
         </form>
         <div id="container" class='text-center' style="">
-            <div><button type="button" class="btn btn-warning" style="font-size:96px; font-weight: bold;" onclick="window.location.href = '/idle';">Skip</button></div>
+            <div><button type="button" class="btn btn-default" style="font-size:96px; font-weight: bold;" onclick="window.location.href = '/idle';">Skip</button></div>
         </div>
         <!-- <h4 style="font-size:48px; color:white">wait like 4 seconds after clicking submit</h4> -->
     </div>
