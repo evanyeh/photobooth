@@ -141,6 +141,8 @@ def send_mail(recipient, user_images_copy):
     s.starttls()
     s.ehlo()
     s.login(config_file.email_username, config_file.email_password)
-    s.sendmail(msg['From'], msg['To'], msg.as_string())
+    for r in recipient:
+        s.sendmail(msg['From'], r, msg.as_string())
+        print("---------EMAIL SENT TO: " + r)
 
     s.quit()
