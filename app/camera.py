@@ -1,5 +1,5 @@
 '''
-Helper functions that aid in gphoto2 control of the camera. 
+Helper functions that aid in gphoto2 control of the camera.
 '''
 from time import sleep
 from datetime import datetime

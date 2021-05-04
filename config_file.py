@@ -1,8 +1,9 @@
 # Image processing
-email_username = "username@gmail.com"
+email_username = "username@website.com"
 email_password = "password"
 
 # Image capture
+event_name = "Suite 214 Picnic"
 session_name = "winterpicnictest"
 album_location = "/home/evan/Pictures/photobooth/" + session_name + "/"
 IMAGE_TIMEOUT = 6
@@ -23,3 +24,6 @@ styling = { \
 email_from = "Suite 214 (:"
 email_subject = 'Suite 214 Picnic Photos'
 email_body = '<p>Thanks for hanging out with us! We hope you had a good time (:&nbsp;</p><p>  <br></p><p>  <a href="https://twitter.com/MichaelaOkla/status/1195771517868498944">hav a gud winter term</a>,</p><p>'
+
+# Development
+DEBUG_MODE = False # primarily for bypassing camera intiation

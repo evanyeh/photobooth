@@ -28,7 +28,9 @@ def index():
 @app.route('/idle')
 def idle():
     del user_images[:]
-    return render_template('idle.html', styling=config_file.styling)
+    return render_template('idle.html', \
+        styling=config_file.styling, \
+        event_name=config_file.event_name)
 
 '''
 Clears sessions image filepaths, initiates gphoto2 camera settings, renders
@@ -41,7 +43,8 @@ def capture_sequence():
         camera.init(config_file.album_location)
     except:
         print('---------CAMERA INIT FAILED')
-        return redirect('/idle')
+        if not config_file.DEBUG_MODE:
+            return redirect('/idle')
     return render_template('capture.html', \
         styling=config_file.styling, \
         num_pictures=config_file.num_pictures, \
@@ -97,7 +100,7 @@ immediately redirecting to standy page (/idle)
 '''
 @app.route('/send_email', methods=['POST'])
 def send_email():
-    email = request.form['email']
+    email = request.form['email'].strip(" ").split(";")
     # send email as separate thread so browser does not get hung up on this page
     # waiting for large attachments to send
     mail = threading.Thread(target=send_mail, args=(email,user_images.copy()))
@@ -113,7 +116,7 @@ def send_mail(recipient, user_images_copy):
     msg = MIMEMultipart()
     msg['Subject'] = config_file.email_subject
     msg['From'] = config_file.email_from
-    msg['To'] = recipient
+    msg['To'] = recipient[0]
 
     # build email message
     suite_members = ['Daniel', 'Evan', 'Alex', 'Esther', 'Yoojin', 'Brandon']
@@ -125,7 +128,7 @@ def send_mail(recipient, user_images_copy):
     msg.attach(text)
     # log which email and which pictures are sent
     log = open(config_file.album_location + 'user_log.txt','a+')
-    log.write(recipient+'\n')
+    log.write(str(recipient)+'\n')
     for i in user_images_copy:
         log.write(i+'\n')
         img_data = open(i, 'rb').read()
@@ -138,5 +141,8 @@ def send_mail(recipient, user_images_copy):
     s.starttls()
     s.ehlo()
     s.login(config_file.email_username, config_file.email_password)
-    s.sendmail(msg['From'], msg['To'], msg.as_string())
+    for r in recipient:
+        s.sendmail(msg['From'], r, msg.as_string())
+        print("---------EMAIL SENT TO: " + r)
+
     s.quit()
