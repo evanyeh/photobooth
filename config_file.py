@@ -10,11 +10,11 @@ image_timeout = 6
 # total number of pictures to take in each session (pos int)
 num_pictures = 1
 # computer will send capture command when countdown timer is at <trigger_pre_count>
-# bc there is lag between command and realization. (non-neg int)
+# bc there is lag between command and realization. (non-neg int, must be <= countdown_time)
 trigger_pre_count = 2
 # countdown time in seconds before each picture (pos int)
 countdown_time = 5
-# time in seconds between each picture (pos any)
+# time in seconds between each picture, to allow photo transfer and review (pos any)
 time_between_pictures = 6
 
 ################################# Web Styling ##################################

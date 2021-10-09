@@ -31,8 +31,8 @@
                     $("#timer_count").html(j);
                     // wait a second
                     await sleep(1000);
-                    // T-2 seconds to start trigger is just the right amount of
-                    // time to take picture exactly on zero
+                    // send the trigger early so camera takes picture right on 
+                    // zero in the countdown
                     if (j == TRIGGER_PRE_COUNT) {
                         // call the python function to take picture and display
                         // image review

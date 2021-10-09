@@ -3,7 +3,6 @@ from app import app
 import os
 import base64 # for image displaying
 import datetime # for timing out
-import time
 import random
 from app import camera
 import config_file
@@ -40,6 +39,7 @@ picture taking page with countdown text block and image review screen
 def capture_sequence():
     del user_images[:]
     try:
+        camera.create_save_folder(config_file.album_location)
         camera.init(config_file.album_location)
     except:
         print('---------CAMERA INIT FAILED')
@@ -63,7 +63,7 @@ def trigger_and_return_picture():
         img_path = camera.capture_image(config_file.album_location)
     except:
         failed = True
-        print('---------CAMERA CAPTURE FAILED')
+        print('--------- CAMERA CAPTURE FAILED')
 
     if not failed:
         # wait for image to come in
@@ -71,7 +71,7 @@ def trigger_and_return_picture():
         while not os.path.exists(img_path):
             # wait here
             if (datetime.datetime.now() - start_time).total_seconds() > config_file.image_timeout:
-                print("--------- TIMEOUT")
+                print('--------- TIMEOUT')
                 failed = True
                 break
 
@@ -93,7 +93,7 @@ Distribution page that prompts for email or allows user to skip
 '''
 @app.route('/distribute')
 def distribute():
-    print("---------PICTURES TAKEN:" + str(user_images))
+    print('--------- PICTURES TAKEN:' + str(user_images))
     return render_template('distribute.html', styling=config_file.styling)
 
 '''
@@ -105,7 +105,7 @@ def send_email():
     email = request.form['email'].strip(" ").split(";")
     # send email as separate thread so browser does not get hung up on this page
     # waiting for large attachments to send
-    mail = threading.Thread(target=send_mail, args=(email,user_images.copy()))
+    mail = threading.Thread(target=send_mail_thread, args=(email,user_images.copy()))
     mail.start()
     # done with current session, clear filepaths
     del user_images[:]
@@ -114,11 +114,10 @@ def send_email():
 '''
 Sends an email to a recipient with images in user_images_copy attached
 '''
-def send_mail(recipient, user_images_copy):
+def send_mail_thread(recipient, user_images_copy):
     msg = MIMEMultipart()
     msg['Subject'] = config_file.email_subject
     msg['From'] = config_file.email_from
-    msg['To'] = recipient[0]
 
     # build email message
     body = config_file.email_body
@@ -131,6 +130,7 @@ def send_mail(recipient, user_images_copy):
     msg.attach(text)
     # log which email and which pictures are sent
     log = open(config_file.album_location + 'user_log.txt','a+')
+    log.write(datetime.datetime.now().strftime('%Y-%m-%d %T') + '\n')
     log.write(str(recipient)+'\n')
     for i in user_images_copy:
         log.write(i+'\n')
