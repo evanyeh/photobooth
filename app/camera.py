@@ -22,7 +22,8 @@ def kill_gphoto2_process():
 
 '''
 Initiates picture taking by clearing existing gphoto2 processes, creating
-folder to save photos in, setting capturetarget of camera
+folder to save photos in, setting capturetarget of camera to 1 which saves to 
+the memory card, not to internal RAM (0).
 '''
 def init(album_location):
     kill_gphoto2_process()

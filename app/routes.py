@@ -48,7 +48,9 @@ def capture_sequence():
     return render_template('capture.html', \
         styling=config_file.styling, \
         num_pictures=config_file.num_pictures, \
-        countdown_time=config_file.countdown_time)
+        countdown_time=config_file.countdown_time, \
+        trigger_pre_count=config_file.trigger_pre_count, \
+        time_between_pictures=config_file.time_between_pictures)
 
 '''
 Called by javascript in /capture to attempt to capture and download
@@ -68,7 +70,7 @@ def trigger_and_return_picture():
         start_time = datetime.datetime.now()
         while not os.path.exists(img_path):
             # wait here
-            if (datetime.datetime.now() - start_time).total_seconds() > config_file.IMAGE_TIMEOUT:
+            if (datetime.datetime.now() - start_time).total_seconds() > config_file.image_timeout:
                 print("--------- TIMEOUT")
                 failed = True
                 break
@@ -119,10 +121,11 @@ def send_mail(recipient, user_images_copy):
     msg['To'] = recipient[0]
 
     # build email message
-    suite_members = ['Daniel', 'Evan', 'Alex', 'Esther', 'Yoojin', 'Brandon']
-    random.shuffle(suite_members)
     body = config_file.email_body
-    body += ', '.join([str(elem) for elem in suite_members]) + '</p>'
+    # shuffle the order of the suite members for the signature
+    signature_members = config_file.signature_members
+    random.shuffle(signature_members)
+    body += ', '.join([str(elem) for elem in signature_members]) + '</p>'
 
     text = MIMEText(body, 'html')
     msg.attach(text)
