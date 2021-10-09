@@ -3,7 +3,6 @@ from app import app
 import os
 import base64 # for image displaying
 import datetime # for timing out
-import time
 import random
 from app import camera
 import config_file
@@ -40,6 +39,7 @@ picture taking page with countdown text block and image review screen
 def capture_sequence():
     del user_images[:]
     try:
+        camera.create_save_folder(config_file.album_location)
         camera.init(config_file.album_location)
     except:
         print('---------CAMERA INIT FAILED')
@@ -48,7 +48,9 @@ def capture_sequence():
     return render_template('capture.html', \
         styling=config_file.styling, \
         num_pictures=config_file.num_pictures, \
-        countdown_time=config_file.countdown_time)
+        countdown_time=config_file.countdown_time, \
+        trigger_pre_count=config_file.trigger_pre_count, \
+        time_between_pictures=config_file.time_between_pictures)
 
 '''
 Called by javascript in /capture to attempt to capture and download
@@ -61,15 +63,15 @@ def trigger_and_return_picture():
         img_path = camera.capture_image(config_file.album_location)
     except:
         failed = True
-        print('---------CAMERA CAPTURE FAILED')
+        print('--------- CAMERA CAPTURE FAILED')
 
     if not failed:
         # wait for image to come in
         start_time = datetime.datetime.now()
         while not os.path.exists(img_path):
             # wait here
-            if (datetime.datetime.now() - start_time).total_seconds() > config_file.IMAGE_TIMEOUT:
-                print("--------- TIMEOUT")
+            if (datetime.datetime.now() - start_time).total_seconds() > config_file.image_timeout:
+                print('--------- TIMEOUT')
                 failed = True
                 break
 
@@ -91,7 +93,7 @@ Distribution page that prompts for email or allows user to skip
 '''
 @app.route('/distribute')
 def distribute():
-    print("---------PICTURES TAKEN:" + str(user_images))
+    print('--------- PICTURES TAKEN:' + str(user_images))
     return render_template('distribute.html', styling=config_file.styling)
 
 '''
@@ -103,7 +105,7 @@ def send_email():
     email = request.form['email'].strip(" ").split(";")
     # send email as separate thread so browser does not get hung up on this page
     # waiting for large attachments to send
-    mail = threading.Thread(target=send_mail, args=(email,user_images.copy()))
+    mail = threading.Thread(target=send_mail_thread, args=(email,user_images.copy()))
     mail.start()
     # done with current session, clear filepaths
     del user_images[:]
@@ -112,22 +114,23 @@ def send_email():
 '''
 Sends an email to a recipient with images in user_images_copy attached
 '''
-def send_mail(recipient, user_images_copy):
+def send_mail_thread(recipient, user_images_copy):
     msg = MIMEMultipart()
     msg['Subject'] = config_file.email_subject
     msg['From'] = config_file.email_from
-    msg['To'] = recipient[0]
 
     # build email message
-    suite_members = ['Daniel', 'Evan', 'Alex', 'Esther', 'Yoojin', 'Brandon']
-    random.shuffle(suite_members)
     body = config_file.email_body
-    body += ', '.join([str(elem) for elem in suite_members]) + '</p>'
+    # shuffle the order of the suite members for the signature
+    signature_members = config_file.signature_members
+    random.shuffle(signature_members)
+    body += ', '.join([str(elem) for elem in signature_members]) + '</p>'
 
     text = MIMEText(body, 'html')
     msg.attach(text)
     # log which email and which pictures are sent
     log = open(config_file.album_location + 'user_log.txt','a+')
+    log.write(datetime.datetime.now().strftime('%Y-%m-%d %T') + '\n')
     log.write(str(recipient)+'\n')
     for i in user_images_copy:
         log.write(i+'\n')

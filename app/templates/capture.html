@@ -11,7 +11,8 @@
 <script type=text/javascript>
         var NUM_PICTURES = {{ num_pictures }};
         var COUNTDOWN_TIME = {{ countdown_time }};
-
+        var TRIGGER_PRE_COUNT = {{ trigger_pre_count }};
+        var TIME_BETWEEN_PICTURES = {{ time_between_pictures * 1000 }};
         // function to sleep in milliseconds
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
@@ -30,9 +31,9 @@
                     $("#timer_count").html(j);
                     // wait a second
                     await sleep(1000);
-                    // T-2 seconds to start trigger is just the right amount of
-                    // time to take picture exactly on zero
-                    if (j == 2) {
+                    // send the trigger early so camera takes picture right on 
+                    // zero in the countdown
+                    if (j == TRIGGER_PRE_COUNT) {
                         // call the python function to take picture and display
                         // image review
                         $.get('/trigger_and_return_picture',
@@ -45,9 +46,10 @@
                 $("#timer_count").html("LOADING...");
 
                 // wait for download and display
-                await sleep(6000);
+                await sleep(TIME_BETWEEN_PICTURES);
                 $("#timer_count").html("DONE");
             }
+            // crap don't remember what this sleep is for
             await sleep(2000);
             window.location.href = '/distribute';
         }
@@ -55,6 +57,7 @@
 
 
 <head>
+    <!-- look at config_file styling section -->
     <link href="{{ styling['font_file'] }}" rel="stylesheet">
     <style type="text/css">
         /* * {

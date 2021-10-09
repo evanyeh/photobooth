@@ -21,12 +21,12 @@ def kill_gphoto2_process():
             os.kill(pid, signal.SIGKILL)
 
 '''
-Initiates picture taking by clearing existing gphoto2 processes, creating
-folder to save photos in, setting capturetarget of camera
+Initiates picture taking by clearing existing gphoto2 processes, and setting 
+capturetarget of camera to 1 which saves to the memory card, not to internal 
+RAM (0).
 '''
-def init(album_location):
+def init():
     kill_gphoto2_process()
-    create_save_folder(album_location)
     gp(["--set-config", "capturetarget=1"])
 
 '''
@@ -34,7 +34,9 @@ Creates directory at specified location
 '''
 def create_save_folder(album_location):
     try:
-        os.makedirs(album_location)
+        if not os.path.exists(album_location):
+            os.makedirs(album_location)
+            print('album created here: ' + album_location)
     except:
         print("failed to create the new directory")
 
