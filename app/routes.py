@@ -40,7 +40,7 @@ def capture_sequence():
     del user_images[:]
     try:
         camera.create_save_folder(config_file.album_location)
-        camera.init(config_file.album_location)
+        camera.init()
     except:
         print('---------CAMERA INIT FAILED')
         if not config_file.DEBUG_MODE:
