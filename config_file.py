@@ -12,11 +12,11 @@ num_pictures = 3
 # computer will send capture command when countdown timer is at <trigger_pre_count>
 # bc there is lag between command and realization. (non-neg double in seconds, must be <= countdown_time)
 # but countdown only goes 100ms at a time
-trigger_pre_count = 1.6
+trigger_pre_count = 1.9
 # countdown time in seconds before each picture (pos int)
 countdown_time = 5
-# time in seconds between each picture, to allow photo transfer and review (pos any)
-time_between_pictures = 6
+# time in seconds between each picture, to allow review (pos any)
+time_between_pictures = 3
 
 ################################ Google Photos #################################
 google_photos_album_name = "2022 Avery Bay Birthdays"

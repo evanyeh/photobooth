@@ -14,6 +14,7 @@
         var TRIGGER_PRE_COUNT = {{ trigger_pre_count }};
         var TIME_BETWEEN_PICTURES = {{ time_between_pictures * 1000 }};
         var pic_taken = false;
+        var previous_pic = "";
         // function to sleep in milliseconds
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
@@ -27,6 +28,7 @@
                 // label which picture this is
                 $("#picture_count").html("Taking Picture " + (i + 1) + " of " + NUM_PICTURES);
                 pic_taken = false;
+                pic_transferred = false;
                 // countdown from COUNTDOWN_TIME
                 for (let j = COUNTDOWN_TIME*1000; j >= 0; j-=100) {
                     // display countdown
@@ -45,9 +47,17 @@
                         });
                     }
                 }
-
+                
                 $("#timer_count").html("transferring photo...");
 
+                // wait for photo to transfer locally
+                while ($("#target").attr("src") == previous_pic) {
+                    // poll every 200ms
+                    await sleep(200);
+                }
+                
+                previous_pic = $("#target").attr("src");
+                
                 // wait for download and display
                 await sleep(TIME_BETWEEN_PICTURES);
                 $("#timer_count").html("DONE");
