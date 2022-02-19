@@ -18,12 +18,12 @@
                 font-family: '{{ styling['font_name'] }}' !important;
             }
             body {
-                background-color: #{{ styling['primary_bg_color'] }};
+                background-color: {{ styling['primary_bg_color'] }};
             }
         </style>
     </head>
     <div class='text-center'>
-        <h1 style="font-size:150px; margin: 200px; color:#{{ primary_font_color }}; font-weight: bold;">Enter email(s) to receive pix (separate with ;)</h1>
+        <h1 style="font-size:150px; margin: 200px; color:{{ styling['primary_font_color'] }}; font-weight: bold;">Enter email(s) to receive pix<br>separate with ;</h1>
         <form style="font-size:96px;" action="{{ url_for('send_email') }}" method="post">
             <input type="text" name="email" autofocus="autofocus">
             <input type="submit" class="btn btn-default" style="font-size:86px; font-weight: bold;">

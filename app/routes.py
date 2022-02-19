@@ -13,6 +13,13 @@ from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 
+# for google photos upload
+import sys
+# insert at 1, 0 is the script path (or '' in REPL)
+sys.path.insert(1, '/home/evan/projects/gphotos-upload')
+
+import upload
+
 # a list of filepaths of images taken in a current picture-taking session
 user_images = []
 
@@ -41,8 +48,9 @@ def capture_sequence():
     try:
         camera.create_save_folder(config_file.album_location)
         camera.init()
-    except:
+    except Exception as e:
         print('---------CAMERA INIT FAILED')
+        print(e)
         if not config_file.DEBUG_MODE:
             return redirect('/idle')
     return render_template('capture.html', \
@@ -61,9 +69,10 @@ def trigger_and_return_picture():
     failed = False
     try:
         img_path = camera.capture_image(config_file.album_location)
-    except:
+    except Exception as e:
         failed = True
         print('--------- CAMERA CAPTURE FAILED')
+        print(e)
 
     if not failed:
         # wait for image to come in
@@ -77,7 +86,7 @@ def trigger_and_return_picture():
 
     # failed image
     if failed:
-        img_path = 'app/static/fail/esther.JPG'
+        img_path = 'app/static/fail/uhoh.jpg'
 
     # add taken image to list of filepaths from current session
     user_images.append(img_path)
@@ -94,7 +103,16 @@ Distribution page that prompts for email or allows user to skip
 @app.route('/distribute')
 def distribute():
     print('--------- PICTURES TAKEN:' + str(user_images))
+    # start thread so don't hang on uploading
+    mail = threading.Thread(target=gphotos_upload_thread, args=(user_images.copy(),))
+    mail.start()
     return render_template('distribute.html', styling=config_file.styling)
+
+def gphotos_upload_thread(user_images):
+    print("Uploading to google photos")
+    session = upload.get_authorized_session("/home/evan/projects/gphotos-upload/client_id.json")
+    images = [im for im in user_images if im != 'app/static/fail/uhoh.jpg']
+    upload.upload_photos(session, images, config_file.google_photos_album_name)
 
 '''
 Called after submitting email form and starts an email-sending thread before
@@ -124,7 +142,7 @@ def send_mail_thread(recipient, user_images_copy):
     # shuffle the order of the suite members for the signature
     signature_members = config_file.signature_members
     random.shuffle(signature_members)
-    body += ', '.join([str(elem) for elem in signature_members]) + '</p>'
+    body += ', '.join([str(elem) for elem in signature_members]) + '!</p>'
 
     text = MIMEText(body, 'html')
     msg.attach(text)
@@ -133,10 +151,11 @@ def send_mail_thread(recipient, user_images_copy):
     log.write(datetime.datetime.now().strftime('%Y-%m-%d %T') + '\n')
     log.write(str(recipient)+'\n')
     for i in user_images_copy:
-        log.write(i+'\n')
-        img_data = open(i, 'rb').read()
-        image = MIMEImage(img_data, name=os.path.basename(i), _subtype="jpg")
-        msg.attach(image)
+        if i != 'app/static/fail/uhoh.jpg':
+            log.write(i+'\n')
+            img_data = open(i, 'rb').read()
+            image = MIMEImage(img_data, name=os.path.basename(i), _subtype="jpg")
+            msg.attach(image)
     log.close()
 
     s = smtplib.SMTP('smtp.gmail.com', 587)

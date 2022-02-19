@@ -10,15 +10,16 @@ import signal, os, subprocess
 Kill the gphoto2 process that starts whenever camera is connected
 '''
 def kill_gphoto2_process():
-    p = subprocess.Popen(['ps', '-A'], stdout=subprocess.PIPE)
-    out, err = p.communicate()
+    subprocess.run(["pkill", "-f", "gphoto2"])
+    # p = subprocess.Popen(['ps', '-A'], stdout=subprocess.PIPE)
+    # out, err = p.communicate()
 
-    # Search for the line that has the process we want to kill
-    for line in out.splitlines():
-        if b'gvfsd-gphoto2' in line:
-            # Kill the process
-            pid = int(line.split(None,1)[0])
-            os.kill(pid, signal.SIGKILL)
+    # # Search for the line that has the process we want to kill
+    # for line in out.splitlines():
+    #     if b'gvfsd-gphoto2' in line:
+    #         # Kill the process
+    #         pid = int(line.split(None,1)[0])
+    #         os.kill(pid, signal.SIGKILL)
 
 '''
 Initiates picture taking by clearing existing gphoto2 processes, and setting 
