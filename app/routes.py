@@ -93,7 +93,7 @@ def trigger_and_return_picture():
 
     # encode in base64 for returning to image review screen
     with open(img_path, 'rb') as img_file:
-            img_string = base64.b64encode(img_file.read())
+        img_string = base64.b64encode(img_file.read())
 
     return img_string
 

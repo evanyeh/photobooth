@@ -10,11 +10,12 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type=text/javascript>
         var NUM_PICTURES = {{ num_pictures }};
-        var COUNTDOWN_TIME = {{ countdown_time }};
-        var TRIGGER_PRE_COUNT = {{ trigger_pre_count }};
+        var COUNTDOWN_TIME = {{ countdown_time * 1000 }};
+        var TRIGGER_PRE_COUNT = {{ trigger_pre_count * 1000}};
         var TIME_BETWEEN_PICTURES = {{ time_between_pictures * 1000 }};
         var pic_taken = false;
-        var previous_pic = "";
+        var compliments = Array("smooth moves!", "looking groovy!", "someone blinked", "NUDITY DETECTED", "loooove!", "beauty");
+
         // function to sleep in milliseconds
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
@@ -28,22 +29,23 @@
                 // label which picture this is
                 $("#picture_count").html("Taking Picture " + (i + 1) + " of " + NUM_PICTURES);
                 pic_taken = false;
-                pic_transferred = false;
+                
                 // countdown from COUNTDOWN_TIME
-                for (let j = COUNTDOWN_TIME*1000; j >= 0; j-=100) {
+                for (let j = COUNTDOWN_TIME; j >= 0; j-=100) {
                     // display countdown
                     $("#timer_count").html(Math.ceil(j/1000));
                     // wait same time j is decremented by
                     await sleep(100);
                     // send the trigger early so camera takes picture right on 
                     // zero in the countdown
-                    if (j <= TRIGGER_PRE_COUNT*1000 && !pic_taken) {
+                    if (j <= TRIGGER_PRE_COUNT && !pic_taken) {
                         pic_taken = true;
                         // call the python function to take picture and display
                         // image review
                         $.get('/trigger_and_return_picture',
                             function(rawImageData) {
-                          $("#target").attr("src","data:image/gif;base64," + rawImageData);
+                                $("#img_display").attr("src","data:image/gif;base64," + rawImageData);
+                                $("#timer_count").html(compliments[Math.floor(Math.random()*compliments.length)]);
                         });
                     }
                 }
@@ -51,19 +53,19 @@
                 $("#timer_count").html("transferring photo...");
 
                 // wait for photo to transfer locally
-                while ($("#target").attr("src") == previous_pic) {
+                while ($("#timer_count").html() == "transferring photo...") {
                     // poll every 200ms
                     await sleep(200);
                 }
                 
-                previous_pic = $("#target").attr("src");
                 
-                // wait for download and display
+                // wait for review
                 await sleep(TIME_BETWEEN_PICTURES);
-                $("#timer_count").html("DONE");
+                
             }
-            // crap don't remember what this sleep is for
-            await sleep(2000);
+            // $("#timer_count").html("DONE");
+            // crap don't remember what this sleep is for, I think final review
+            
             window.location.href = '/distribute';
         }
 </script>
@@ -120,11 +122,11 @@
         <h1 id="timer_count" style="font-size:75px;"></h1>
         <!-- <div class="container">
             <div class="col-md-12" style="padding-left: 0px;  padding-right: 0px;">
-                <img id="target" src="" class="img-responsive">
+                <img id="img_display" src="" class="img-responsive">
             </div>
         </div> -->
         <div class="imgwrapper">
-            <img id="target" class="img-responsive" src="">
+            <img id="img_display" class="img-responsive" src="">
         </div>
     </body>
 </div>

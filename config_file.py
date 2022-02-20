@@ -1,6 +1,6 @@
 ################################ Image capture #################################
 # for displaying in idle photobooth page
-event_name = "Happy Birthday!!"
+event_name = "Happy Birthdays Bay Baes!!"
 # for creating a subfolder under some larger photobooth directory, see album_location
 session_name = "2022-02-19 Feb Birthday"
 # where all the photos are saved, should be auto-created if doesn't already exist
@@ -12,14 +12,14 @@ num_pictures = 3
 # computer will send capture command when countdown timer is at <trigger_pre_count>
 # bc there is lag between command and realization. (non-neg double in seconds, must be <= countdown_time)
 # but countdown only goes 100ms at a time
-trigger_pre_count = 1.9
+trigger_pre_count = 1.3
 # countdown time in seconds before each picture (pos int)
 countdown_time = 5
 # time in seconds between each picture, to allow review (pos any)
 time_between_pictures = 3
 
 ################################ Google Photos #################################
-google_photos_album_name = "2022 Avery Bay Birthdays"
+google_photos_album_name = "2022 bruary bay bae birthdays"
 
 ################################# Web Styling ##################################
 # can browse https://fonts.google.com/ for ez fonts
