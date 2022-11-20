@@ -46,6 +46,6 @@ Captures image and downloads locally to a given album location. Images are kept
 on camera and on host.
 '''
 def capture_image(album_location):
-    img_path = album_location + datetime.now().strftime("%Y.%m.%d %H:%M:%S") + ".JPG"
+    img_path = album_location + datetime.now().strftime("%Y-%m-%d %H-%M-%S") + ".JPG"
     gp(["--capture-image-and-download", "--filename", img_path, "--keep"])
     return img_path
